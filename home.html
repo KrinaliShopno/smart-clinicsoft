@@ -351,7 +351,7 @@
       opacity: 1;
     }
 
-    .mobile-cta-item {
+    .mobile-cta-item, .mobile-close-item {
       display: none;
       width: 100%;
     }
@@ -379,9 +379,15 @@
     }
 
     @media(max-width:960px) {
+      header {
+        top: 64px;
+      }
+      header.scrolled {
+        top: 0;
+      }
       .nav-links {
-        position: fixed;
-        top: 74px;
+        position: absolute;
+        top: calc(100% + 5px);
         left: 16px;
         right: 16px;
         background: #fff;
@@ -411,12 +417,38 @@
         display: block;
       }
 
+      .mobile-close-item {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+        margin-bottom: -10px;
+      }
+      
+      .mobile-close-item button {
+        background: none;
+        border: none;
+        font-size: 32px;
+        line-height: 1;
+        color: var(--slate);
+        cursor: pointer;
+        padding: 0 5px;
+      }
+
       .brand img {
         height: 48px;
       }
 
       .menu-toggle {
         display: flex;
+      }
+    }
+
+    @media(max-width:560px) {
+      header {
+        top: 86px;
+      }
+      header.scrolled {
+        top: 0;
       }
     }
 
@@ -3120,6 +3152,9 @@
           <img src="images/logo-Photoroom.png" alt="Smart ClinicSoft Logo">
         </a>
         <ul class="nav-links" id="navLinks">
+          <li class="mobile-close-item">
+            <button id="closeMenuBtn" aria-label="Close Menu">&times;</button>
+          </li>
           <li><a href="#about">About</a></li>
           <li><a href="#services">Services</a></li>
           <li><a href="#industries">Industries</a></li>
@@ -4097,8 +4132,19 @@
     // Mobile menu
     const menuToggle = document.getElementById('menuToggle');
     const navLinks = document.getElementById('navLinks');
+    const closeMenuBtn = document.getElementById('closeMenuBtn');
+    
+    function closeMenu() {
+      navLinks.classList.remove('open');
+    }
+    
     menuToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
-    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+    
+    if(closeMenuBtn) {
+      closeMenuBtn.addEventListener('click', closeMenu);
+    }
+    
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
 
     // Team image slider
     (function () {
